@@ -1,7 +1,6 @@
 import './MoviesCard.css';
 import React, {useState} from 'react';
 
-
 const MoviesCard = ({ movie }) => {
 
     let hours = Math.trunc(movie.duration / 60);
