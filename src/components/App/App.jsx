@@ -19,13 +19,13 @@ const App = () => {
     const handleLogin = ({ email, password }) => {
         setLoggedIn(true);
         console.log({ email, password });
-        navigate('/');
+        navigate('/movies');
     };
 
     const handleRegister = ({ name, email, password }) => {
         setLoggedIn(true);
         console.log({ name, email, password });
-        navigate('/');
+        navigate('/movies');
     };
 
     const handleLogOut = () => {
