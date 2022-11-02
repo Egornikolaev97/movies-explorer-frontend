@@ -1,4 +1,4 @@
-// import './MoviesCard.css';
+import './MoviesCard.css';
 import React, {useState} from 'react';
 
 const MoviesCard = ({ movie }) => {
