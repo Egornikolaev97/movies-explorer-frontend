@@ -4,7 +4,21 @@
     height: 281px;
     border-radius: 6px;
     background-color: #222222;
+    cursor: pointer;
+    transition: .2s linear;
+    list-style-type: none;
 }
+
+.movie:hover {
+    opacity: 0.8;
+}
+
+.movie:hover .movie__delete {
+    background-image: url('../../images/movie-delete.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 
 .movie__img {
     display: block;
@@ -53,6 +67,19 @@
     opacity: 0.7;
 }
 
+.movie__delete {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    transition: opacity .2s linear;
+    border: none;
+    background-color: transparent;
+}
+
+.movie__delete:hover {
+    opacity: 0.8
+}
+
 .movie__like_active {
     background-image: url('../../images/like-active.svg');
 }
@@ -68,5 +95,11 @@
 @media (max-width: 768px) {
     .movie {
         height: 262px;
+    }
+
+    .movie__delete {
+        background-image: url('../../images/movie-delete.svg');
+        background-position: center;
+        background-repeat: no-repeat;
     }
 }

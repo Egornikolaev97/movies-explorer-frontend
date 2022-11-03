@@ -1,4 +1,5 @@
 import './MoviesCard.css';
+import {useLocation} from 'react-router-dom';
 import React, {useState} from 'react';
 
 const MoviesCard = ({ movie }) => {
@@ -9,19 +10,22 @@ const MoviesCard = ({ movie }) => {
     const [like, setLike] = useState(false);
     const handleLike = () => setLike(!like);
 
-    const movieLikeClass = `movie__like ${like && 'movie__like_active'}`;
+    const location = useLocation();
+
+    const movieLikeClass = location.pathname === '/saved-movies' ? 'movie__delete' : `movie__like ${like && 'movie__like_active'}`;
+
 
     return (
-        <div className='movie'>
+        <li className='movie'>
             <img className='movie__img' src={movie.image} alt={movie.nameRU}/>
             <div className='movie__info' >
                 <div className='movie__block'>
                 <h2 className='movie__name'>{movie.nameRU}</h2>
-                <div className={movieLikeClass} onClick={handleLike}></div>
+                <button className={movieLikeClass} onClick={handleLike} type='button'></button>
                 </div>
                 <p className='movie__time'>{hours}ч {min}м</p>
             </div>
-        </div>
+        </li>
     );
 }
 

@@ -50,7 +50,9 @@ import React, {useState} from 'react';
       </form>
       <button
       className="form-page__btn-submit"
-      onClick={handleLogin}>
+      onClick={handleLogin}
+      type='button'
+      >
         Войти
         </button>
       <div className='form-page__subtitle'>

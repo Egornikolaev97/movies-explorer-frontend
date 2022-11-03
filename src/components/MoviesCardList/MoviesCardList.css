@@ -17,6 +17,8 @@
     row-gap: 37px;
     justify-content: center;
     margin-bottom: 30px;
+    margin-top: 0;
+    padding: 0;
 }
 
 .movies__btn {
@@ -37,14 +39,13 @@
     cursor: pointer;
 }
 
+.movies__btn_hidden {
+    display: none;
+}
+
 .movies__btn:hover {
     opacity: 0.8;
 }
-
-/* @media (min-width: 767px) and (max-width: 999px) {
-
-
-} */
 
 @media (max-width: 768px) {
     .movies__list {

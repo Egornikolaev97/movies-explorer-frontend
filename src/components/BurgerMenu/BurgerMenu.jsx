@@ -34,7 +34,7 @@ const BurgerMenu = () => {
         </NavLink>
       </nav>
       <div className={`burger__background ${isMenuOpen ? 'burger__background_active' : ''}`} onClick={closeMenu}></div>
-      <button className={`burger__btn ${isMenuOpen && 'burger__btn_close'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}></button>
+      <button className={`burger__btn ${isMenuOpen && 'burger__btn_close'}`} onClick={() => setIsMenuOpen(!isMenuOpen)} type='button'></button>
     </>
   );
 };

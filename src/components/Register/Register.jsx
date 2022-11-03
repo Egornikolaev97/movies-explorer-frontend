@@ -58,6 +58,7 @@ const Register = ({handleRegister}) => {
         <button
         className="form-page__btn-submit"
         onClick={handleRegister}
+        type='button'
         >Зарегистрироваться
         </button>
         <div className="form-page__subtitle">

@@ -30,8 +30,8 @@ const Profile = ({handleLogOut}) => {
           />
         </label>
       </form>
-      <button className="profile__btn">Редактировать</button>
-      <button className="profile__btn" onClick={handleLogOut}>Выйти из аккаунта</button>
+      <button className="profile__btn" type='submit'>Редактировать</button>
+      <button className="profile__btn" onClick={handleLogOut} type='submit'>Выйти из аккаунта</button>
     </section>
   );
 };
