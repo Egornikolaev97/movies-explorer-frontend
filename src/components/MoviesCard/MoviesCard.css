@@ -1,7 +1,7 @@
 .movie {
     width: 364px;
     max-width: 100%;
-    height: 281px;
+    /* height: 281px; */
     border-radius: 6px;
     background-color: #222222;
     cursor: pointer;
@@ -95,7 +95,7 @@
 
 @media (max-width: 768px) {
     .movie {
-        height: 262px;
+        /* height: 262px; */
     }
 
     .movie__delete {

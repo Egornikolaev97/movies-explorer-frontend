@@ -16,6 +16,7 @@
     column-gap: 24px;
     row-gap: 37px;
     justify-content: center;
+    justify-items: center;
     margin-bottom: 30px;
     margin-top: 0;
     padding: 0;
@@ -46,6 +47,20 @@
 .movies__btn:hover {
     opacity: 0.8;
 }
+/*
+@media (max-width: 997px) {
+
+    .movies__list {
+        justify-items: center;
+    }
+
+    .movie {
+        width: 100%;
+        justify-self: stretch;
+    }
+} */
+
+
 
 @media (max-width: 768px) {
     .movies__list {
@@ -67,6 +82,7 @@
 @media (min-width: 320px) and (max-width: 550px) {
     .movies__list {
         grid-template-columns: minmax(300px, 339px);
+        column-gap: 14px;
     }
 
     .movies__container {
@@ -74,7 +90,7 @@
     }
 
     .movies__container {
-        padding: 133px 14px 0;
+        padding: 133px 10px 0;
     }
 
     .movies__btn {
