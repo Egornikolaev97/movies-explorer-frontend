@@ -1,0 +1,145 @@
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navgiataion__container {
+    display: flex;
+    column-gap: 16px;
+    justify-content: space-between;
+    flex-direction: row;
+    font-family: 'Inter';
+    font-style: normal;
+    font-size: 13px;
+    line-height: 18px;
+    color: #fff;
+    text-align: center;
+    align-items: center;
+    margin-left: 65px;
+}
+
+.navigation__acc-btn {
+    width: 100px;
+    height: 32px;
+    border-radius: 40px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    padding: 3px 3px 3px 11px;
+    justify-content: space-between;
+    box-sizing: border-box;
+    flex-direction: row;
+    border: none;
+    background-color: inherit;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity .2s linear;
+    text-decoration: none;
+    z-index: 2;
+}
+
+.navigation__main {
+    display: none;
+}
+
+.navigation__entry-btn {
+    background-color: #3DDC84;
+    width: 76px;
+    height: 32px;
+    border-radius: 3px;
+    border: none;
+    color: #000;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    transition: opacity .2s linear;
+    cursor: pointer;
+    text-decoration: none;
+    padding-top: 7px;
+    box-sizing: border-box;
+    margin-left: 14px;
+}
+
+.navigation__entry-btn:hover {
+    opacity: 0.8;
+}
+
+.navigation__acc-btn:hover {
+    opacity: 0.8;
+}
+
+.navigation__link {
+    text-decoration: none;
+    color: #fff;
+    padding-top: 2px;
+    margin: 0;
+    line-height: 12px;
+    font-size: 13px;
+    font-weight: 400;
+    transition: opacity .2s linear;
+}
+
+.navigation__link_register {
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.navigation__link:hover {
+    opacity: 0.7;
+}
+
+.navigation__item {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3DDC84;
+    background-image: url('../../images/acc.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.navigation__item_dark {
+    background-color: #313131;
+}
+
+.navigation__link-active {
+    font-weight: 500;
+    text-decoration: none;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .navigation-movies {
+        display: none;
+    }
+
+    .navigation__acc-btn_hidden {
+        display: none;
+    }
+}
+
+
+@media (min-width: 320px) and (max-width: 520px) {
+
+    .navigation {
+        font-size: 10px;
+        column-gap: 14px;
+    }
+
+    .navigation__entry-btn {
+        width: 54px;
+        height: 26px;
+        margin-left: 0;
+        padding: 5px;
+    }
+
+    .navigation__link_register {
+        font-size: 10px;
+        line-height: 16px;
+    }
+}

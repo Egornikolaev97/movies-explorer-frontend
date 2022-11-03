@@ -1,1 +1,1 @@
-# movies-explorer-frontend
+Ссылка на макет Figma https://disk.yandex.ru/d/fVy7WOzH9EjM0Q
