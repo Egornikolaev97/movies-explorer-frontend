@@ -94,9 +94,6 @@
 }
 
 @media (max-width: 768px) {
-    .movie {
-        /* height: 262px; */
-    }
 
     .movie__delete {
         background-image: url('../../images/movie-delete.svg');

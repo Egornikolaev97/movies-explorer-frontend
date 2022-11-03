@@ -47,20 +47,6 @@
 .movies__btn:hover {
     opacity: 0.8;
 }
-/*
-@media (max-width: 997px) {
-
-    .movies__list {
-        justify-items: center;
-    }
-
-    .movie {
-        width: 100%;
-        justify-self: stretch;
-    }
-} */
-
-
 
 @media (max-width: 768px) {
     .movies__list {
