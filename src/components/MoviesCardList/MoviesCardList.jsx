@@ -3,7 +3,7 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import movies from '../../configs/constants'
 import { useLocation } from 'react-router-dom';
 
-const MoviesCardList = () => {
+const MoviesCardList = ({movies}) => {
 
   const location = useLocation();
 
@@ -13,13 +13,16 @@ const MoviesCardList = () => {
     <section className="movies">
       <div className="movies__container">
         <ul className="movies__list">
-            {movies.map((movie) => {
+            {movies?.map((movie) => {
               return (
-                <MoviesCard key={movie._id} movie={movie} />
+                <MoviesCard
+                key={movie._id}
+                movie={movie}
+                />
               );
             })}
         </ul>
-        <button className={moviesButtonClass} type='button'>Ещё</button>
+        {/* <button className={moviesButtonClass} type='button'>Ещё</button> */}
       </div>
     </section>
   );

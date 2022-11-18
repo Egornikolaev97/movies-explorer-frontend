@@ -1,7 +1,8 @@
 .movie {
-    width: 364px;
-    max-width: 100%;
+    /* width: 364px;
+    max-width: 100%; */
     /* height: 281px; */
+    width: 100%;
     border-radius: 6px;
     background-color: #222222;
     cursor: pointer;
@@ -22,7 +23,8 @@
 
 .movie__img {
     display: block;
-    max-width: 100%;
+    /* max-width: 100%; */
+    width: 100%;
     object-fit: cover;
 }
 
@@ -100,4 +102,5 @@
         background-position: center;
         background-repeat: no-repeat;
     }
+
 }

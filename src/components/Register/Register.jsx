@@ -3,25 +3,26 @@ import Logo from '../Logo/Logo';
 import { NavLink } from 'react-router-dom';
 import React, {useState} from 'react';
 
-const Register = ({handleRegister}) => {
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+const Register = ({ handleRegister }) => {
 
-  function handleChange(e) {
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  const [data, setData] = useState({ name: '', email: '', password: ''});
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setData({
-      ...data,
+    setData((userData) => ({
+      ...userData,
       [name]: value,
-    });
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleRegister(data);
+    }));
   };
+
+  const handleSubmit = (e) => {
+    const { name, email, password } = data
+    e.preventDefault();
+    handleRegister({name, email, password});
+  }
 
   return (
     <section className="form-page register">
@@ -33,7 +34,10 @@ const Register = ({handleRegister}) => {
           <input
           className="form-page__input"
           name='name'
-          type='text'
+          type='name'
+          onChange={handleChange}
+          value={data.name}
+          required
           />
         </label>
         <label className="form-page__input-container">
@@ -41,8 +45,10 @@ const Register = ({handleRegister}) => {
           <input
           className="form-page__input"
           name='email'
-          type='text'
+          type='email'
           onChange={handleChange}
+          value={data.email}
+          required
            />
         </label>
         <label className="form-page__input-container">
@@ -52,13 +58,15 @@ const Register = ({handleRegister}) => {
           name="password"
           type="password"
           onChange={handleChange}
+          value={data.password}
+          required
            />
         </label>
       </form>
         <button
+        type='submit'
         className="form-page__btn-submit"
-        onClick={handleRegister}
-        type='button'
+        onClick={handleSubmit}
         >Зарегистрироваться
         </button>
         <div className="form-page__subtitle">
@@ -69,6 +77,8 @@ const Register = ({handleRegister}) => {
         </div>
     </section>
   );
+
+
 };
 
 export default Register;

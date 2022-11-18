@@ -77,6 +77,12 @@
     cursor: pointer;
 }
 
+.form-page__btn-submit_save {
+    margin-bottom: 0;
+    width: 410px;
+    height: 47px;
+}
+
 .form-page__btn-submit:hover {
     opacity: 0.8
 }

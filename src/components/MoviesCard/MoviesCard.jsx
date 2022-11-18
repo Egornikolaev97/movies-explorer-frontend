@@ -14,7 +14,6 @@ const MoviesCard = ({ movie }) => {
 
     const movieLikeClass = location.pathname === '/saved-movies' ? 'movie__delete' : `movie__like ${like && 'movie__like_active'}`;
 
-
     return (
         <li className='movie'>
             <img className='movie__img' src={movie.image} alt={movie.nameRU}/>

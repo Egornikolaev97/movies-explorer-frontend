@@ -3,24 +3,22 @@ import Logo from '../Logo/Logo';
 import {NavLink} from 'react-router-dom';
 import React, {useState} from 'react';
 
-  const Login = ({handleLogin}) => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+  const Login = ({ handleLogin }) => {
+    const [data, setData] = useState({email: '', password: ''})
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setData({
-      ...data,
-      [name]: value,
-    });
-  }
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setData((userData) => ({
+        ...userData,
+        [name]: value,
+      }));
+    };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleLogin(data);
-  };
+    const handleSubmit = (e) => {
+      const {email, password } = data
+      e.preventDefault();
+      handleLogin({email, password})
+    }
 
   return (
     <section className="form-page login">
@@ -32,25 +30,27 @@ import React, {useState} from 'react';
           <input
           className="form-page__input"
           name='email'
-          type='text'
-          onChange={handleChange}
+          type='email'
           value={data.email}
+          onChange={handleChange}
+          required
            />
         </label>
         <label className="form-page__input-container">
           <span className="form-page__input-text">Пароль</span>
           <input
           className="form-page__input"
-          name="password"
-          type="password"
-          onChange={handleChange}
+          name='password'
+          type='password'
           value={data.password}
+          onChange={handleChange}
+          required
            />
         </label>
       </form>
       <button
       className="form-page__btn-submit"
-      onClick={handleLogin}
+      onClick={handleSubmit}
       type='button'
       >
         Войти
