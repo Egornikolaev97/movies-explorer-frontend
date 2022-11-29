@@ -2,14 +2,14 @@ class MainApi {
   constructor({ url, headers }) {
     this._url = url;
     this._headers = headers;
-    this._token = null
+    // this._token = null
   }
 
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(res.status);
     }
   }
 
@@ -23,10 +23,7 @@ class MainApi {
 
   getUserInfo() {
     return fetch(`${this._url}users/me`, {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
+      headers: this._headers,
     }).then(this._checkResponse);
   };
 
@@ -35,7 +32,8 @@ class MainApi {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({name, email})
-    }).then(this._checkResponse);
+    })
+    .then(this._checkResponse);
   }
 
   register(name, email, password) {
@@ -62,8 +60,7 @@ class MainApi {
         "Content-type": "applications/json",
         Authorization: `Bearer ${jwt}`,
       }
-    })
-    .then(this._checkResponse);
+    }).then(this._checkResponse);
   }
 }
 

@@ -1,5 +1,6 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import './App.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -10,21 +11,34 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import Preloader from '../Preloader/Preloader'
-import './App.css';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../context/currentUserContext';
+import {
+  serverErrors,
+  updateErrors,
+  loginErrors,
+  registerErrors,
+} from '../../constants/errors.js'
 
-// import moviesApi from '../../utils/MoviesApi';
+import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 
 const App = () => {
   const navigate = useNavigate();
-
+  // С помощью переменной проверяем, авторизирован ли пользователь
   const [loggedIn, setLoggedIn] = useState(false);
-  const [movies, setMovies] = useState('');
+  // С Помощью переменной задаем отображение прелоудера
   const [isLoading, setIsLoading] = useState(false);
-  const [update, setUpdate] = useState(false);
-  const [currentUser, setCurrentUser] = useState({name: '', email: '', _id: ''})
+  // С помощью переменной проверем, отображается ли сообщение об успешном изменении данных.
+  const [userMessage, setUserMessage] = useState(false);
+  // В переменную сохраняется данные текущего пользователя
+  const [currentUser, setCurrentUser] = useState({name: '', email: '', _id: ''});
+  // В переменную записывается сообщение об ошибке
+  const [errorMessage, setErrorMessage] = useState('');
+  // С помощью переменной проверяем, возникала ли ошибка при отрпавлении формы
+  const [isError, setIsError] = useState(false);
+
+  const [movies, setMovies] = useState('');
 
   useEffect(() => {
     if (loggedIn) {
@@ -34,13 +48,15 @@ const App = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      mainApi.getUserInfo()
+      mainApi
+      .getUserInfo()
       .then((data) => {
         setCurrentUser(data);
       }).catch(err => console.log(err));
     }
   }, [loggedIn])
 
+  // проверка авторизации при загрузке страницы
   useEffect(() => {
     tokenCheck();
   }, [])
@@ -61,49 +77,71 @@ const App = () => {
     }
   }
 
-  //логин
+  // функция генерации сообщений об ошибке
+  const errorGenerator = (errors, err) => {
+    errors[err] !== 500
+      ? setErrorMessage(errors[err])
+      : setErrorMessage(serverErrors[500]);
+    setIsError(true);
+  }
+
+  // логин
   const handleLogin = ({ email, password }) => {
     setIsLoading(true);
+    setIsError(false);
     mainApi
       .login(email, password)
       .then((res) => {
           localStorage.setItem("jwt", res.token);
           setLoggedIn(true);
+          mainApi.setToken(res.token);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        errorGenerator(loginErrors, err);
+        setIsError(true);
+      })
       .finally(() => {
         setIsLoading(false);
       })
   };
 
-//регистрация
+// регистрация
   const handleRegister = ({ name, email, password }) => {
     setIsLoading(true);
+    setIsError(false);
     mainApi
       .register(name, email, password)
       .then(() => {
           handleLogin({email, password});
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        errorGenerator(registerErrors, err);
+        setIsError(true);
+      })
       .finally(() => {
         setIsLoading(false);
       })
   };
 
-  //редактирование профиля
+  // редактирование профиля
   const handleUpdateUser = ({ name, email }) => {
+    setIsError(false);
     mainApi
       .updateUserInfo(name, email)
       .then((data) => {
         setCurrentUser(data);
-      }).catch(err => console.log(err));
+        setUserMessage(true);
+      })
+      .catch((err) => {
+        errorGenerator(updateErrors, err);
+        setIsError(true);
+      })
+      .finally(() => {
+        setTimeout(() => setUserMessage(false), 1000);
+      });
   }
 
-  const handleToggleSubmitButton = () => {
-    setUpdate(!update);
-  }
-
-  //выход
+  // выход из аккаунта
   const handleLogOut = () => {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
@@ -111,8 +149,8 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={currentUser}>
+     <div className="App">
       <Header loggedIn={loggedIn} />
       <main className="content">
         <Routes>
@@ -137,20 +175,34 @@ const App = () => {
              <Profile
              handleLogOut={handleLogOut}
              handleUpdateUser={handleUpdateUser}
-             update={update}
-             handleToggleSubmitButton={handleToggleSubmitButton}
+             userMessage={userMessage}
+             errorMessage={errorMessage}
+             isError={isError}
              />
           </ProtectedRoute>}
           />
-          <Route path="/signup" element={<Register handleRegister={handleRegister}/>} />
-          <Route path="/signin" element={<Login handleLogin={handleLogin}/>} />
+          <Route path="/signup"
+          element={
+          <Register
+          handleRegister={handleRegister}
+          errorMessage={errorMessage}
+          isError={isError}/>
+          } />
+          <Route path="/signin"
+          element={
+          <Login
+          handleLogin={handleLogin}
+          errorMessage={errorMessage}
+          isError={isError}
+          />
+          } />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
       <Footer />
       <Preloader isLoading={isLoading} />
-      </CurrentUserContext.Provider>
     </div>
+      </CurrentUserContext.Provider>
   );
 };
 

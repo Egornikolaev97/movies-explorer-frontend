@@ -1,23 +1,29 @@
 import './Login.css';
 import Logo from '../Logo/Logo';
 import {NavLink} from 'react-router-dom';
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
+import useFormValidation from '../../hooks/useFormValidation.js';
 
-  const Login = ({ handleLogin }) => {
-    const [data, setData] = useState({email: '', password: ''})
+  const Login = ({ handleLogin, errorMessage, isError }) => {
+    const {values, errors, isValid, resetForm, handleChange, setIsValid } = useFormValidation();
 
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setData((userData) => ({
-        ...userData,
-        [name]: value,
-      }));
-    };
+    // Очистка полей формы
+    useEffect(() => {
+      resetForm({
+          email: "",
+          password: "",
+        },
+        {},
+        false
+      );
+    }, [resetForm]);
 
+    // Отправка данных формы
     const handleSubmit = (e) => {
-      const {email, password } = data
+      const {email, password } = values
       e.preventDefault();
-      handleLogin({email, password})
+      handleLogin({email, password});
+      setIsValid(false);
     }
 
   return (
@@ -31,10 +37,14 @@ import React, {useState} from 'react';
           className="form-page__input"
           name='email'
           type='email'
-          value={data.email}
+          value={values.email}
           onChange={handleChange}
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,30}$"
+          minLength={2}
+          maxLength={30}
           required
            />
+           <span className='form__error'>{errors.email}</span>
         </label>
         <label className="form-page__input-container">
           <span className="form-page__input-text">Пароль</span>
@@ -42,16 +52,24 @@ import React, {useState} from 'react';
           className="form-page__input"
           name='password'
           type='password'
-          value={data.password}
+          value={values.password}
           onChange={handleChange}
+          minLength={4}
+          maxLength={30}
           required
            />
+           <span className='form__error'>{errors.password}</span>
         </label>
       </form>
+
+      <span className={isError ? 'profile__message profile__message_error': 'profile__message_hidden'}>
+        {errorMessage}
+      </span>
+
       <button
-      className="form-page__btn-submit"
+      className={`form-page__btn-submit ${!isValid ? 'form-page__btn-submit_disabled' : ''}`}
       onClick={handleSubmit}
-      type='button'
+      type='submit'
       >
         Войти
         </button>
@@ -61,6 +79,7 @@ import React, {useState} from 'react';
             Регистрация
         </NavLink>
       </div>
+
     </section>
   );
 };
