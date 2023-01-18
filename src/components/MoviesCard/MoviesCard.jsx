@@ -42,11 +42,17 @@ function MoviesCard({
 
   return (
     <li className='movie'>
+      <a
+        href={movie.trailerLink}
+        className='movie__trailerlink'
+        target='_blank'
+        rel='noreferrer'
+      >
       <img
         className='movie__img'
         src={savedMoviePath ? movie.image : imageUrl}
-        alt={nameRU}
-      />
+        alt={nameRU}/>
+      </a>
       <div className='movie__info'>
         <div className='movie__block'>
           <h2 className='movie__name'>{nameRU}</h2>
