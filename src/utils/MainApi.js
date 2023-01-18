@@ -96,7 +96,8 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  url: 'http://localhost:3500/',
+  url: 'https://api.nikolaev.movies.nomoredomains.icu/',
+  // url: 'http://localhost:3500/',
   headers: {
     'content-type': 'application/json',
     authorization: `Bearer ${localStorage.getItem('jwt')}`,

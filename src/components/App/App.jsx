@@ -58,7 +58,7 @@ const App = () => {
     if (loggedIn) {
       navigate('/movies');
     }
-  }, [loggedIn]);
+  }, [loggedIn, navigate]);
 
   // Получение данных пользователя при загрузке страницы
   useEffect(() => {
@@ -91,6 +91,7 @@ const App = () => {
   // проверка авторизации при загрузке страницы
   useEffect(() => {
     tokenCheck();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // проверка токена

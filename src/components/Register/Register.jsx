@@ -104,8 +104,6 @@ const Register = ({ handleRegister, errorMessage, isError }) => {
         </div>
     </section>
   );
-
-
 };
 
 export default Register;
