@@ -1,1 +1,2 @@
-Ссылка на макет Figma https://disk.yandex.ru/d/fVy7WOzH9EjM0Q
+ссылка на домен https://nikolaev.movies.nomoredomains.icu/
+ссылка на пулреквест
