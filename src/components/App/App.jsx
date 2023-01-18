@@ -10,7 +10,7 @@ import Footer from '../Footer/Footer';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
-import Preloader from '../Preloader/Preloader'
+import Preloader from '../Preloader/Preloader';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../context/currentUserContext';
 import {
@@ -18,8 +18,8 @@ import {
   updateErrors,
   loginErrors,
   registerErrors,
-} from '../../constants/errors.js'
-
+} from '../../constants/errors.js';
+// импорт апишек
 import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 
@@ -32,38 +32,70 @@ const App = () => {
   // С помощью переменной проверем, отображается ли сообщение об успешном изменении данных.
   const [userMessage, setUserMessage] = useState(false);
   // В переменную сохраняется данные текущего пользователя
-  const [currentUser, setCurrentUser] = useState({name: '', email: '', _id: ''});
+  const [currentUser, setCurrentUser] = useState({
+    name: '',
+    email: '',
+    _id: '',
+  });
   // В переменную записывается сообщение об ошибке
   const [errorMessage, setErrorMessage] = useState('');
   // С помощью переменной проверяем, возникала ли ошибка при отрпавлении формы
   const [isError, setIsError] = useState(false);
+  // стейт для проверки ошибки во время поиска
+  const [moviesError, setMoviesError] = useState(false);
+  // переменные для фильмов
+  const [movies, setMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [savedMoviesList, setSavedMoviesList] = useState([]);
+  // ключевое слово/симфол импута
+  const keyword = localStorage.getItem('keyword');
+  // переменные для чекбокса
+  const [checkbox, setCheckbox] = useState(false);
+  const [checkboxSaved, setCheckboxSaved] = useState(false);
 
-  const [movies, setMovies] = useState('');
-
+  // Редирект на страницу с фильмами, если юзер залогинен
   useEffect(() => {
     if (loggedIn) {
       navigate('/movies');
     }
   }, [loggedIn]);
 
+  // Получение данных пользователя при загрузке страницы
   useEffect(() => {
     if (loggedIn) {
       mainApi
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      }).catch(err => console.log(err));
+        .getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => console.log(err));
+      mainApi
+        .getMovies()
+        .then((res) => {
+          setSavedMovies(res.data.reverse());
+          setSavedMoviesList(res.data);
+        })
+        .catch((err) => console.log(err));
     }
-  }, [loggedIn])
+  }, [loggedIn]);
+
+  // загрузка состояния импута и чекбокса из локального хранилища при загрузки страницы
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem('filteredMovies'))) {
+      setMovies(JSON.parse(localStorage.getItem('filteredMovies')));
+      setCheckbox(JSON.parse(localStorage.getItem('checkbox')));
+      setCheckboxSaved(JSON.parse(localStorage.getItem('checkboxSaved')));
+    }
+  }, []);
 
   // проверка авторизации при загрузке страницы
   useEffect(() => {
     tokenCheck();
-  }, [])
+  }, []);
 
   // проверка токена
   const tokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem('jwt');
     if (jwt) {
       mainApi
         .checkToken(jwt)
@@ -75,15 +107,15 @@ const App = () => {
           console.log(`Ошибка: ${err}`);
         });
     }
-  }
+  };
 
-  // функция генерации сообщений об ошибке
+  // генерация сообщений об ошибке
   const errorGenerator = (errors, err) => {
     errors[err] !== 500
       ? setErrorMessage(errors[err])
       : setErrorMessage(serverErrors[500]);
     setIsError(true);
-  }
+  };
 
   // логин
   const handleLogin = ({ email, password }) => {
@@ -92,9 +124,9 @@ const App = () => {
     mainApi
       .login(email, password)
       .then((res) => {
-          localStorage.setItem("jwt", res.token);
-          setLoggedIn(true);
-          mainApi.setToken(res.token);
+        localStorage.setItem('jwt', res.token);
+        setLoggedIn(true);
+        mainApi.setToken(res.token);
       })
       .catch((err) => {
         errorGenerator(loginErrors, err);
@@ -102,17 +134,17 @@ const App = () => {
       })
       .finally(() => {
         setIsLoading(false);
-      })
+      });
   };
 
-// регистрация
+  // регистрация
   const handleRegister = ({ name, email, password }) => {
     setIsLoading(true);
     setIsError(false);
     mainApi
       .register(name, email, password)
       .then(() => {
-          handleLogin({email, password});
+        handleLogin({ email, password });
       })
       .catch((err) => {
         errorGenerator(registerErrors, err);
@@ -120,7 +152,7 @@ const App = () => {
       })
       .finally(() => {
         setIsLoading(false);
-      })
+      });
   };
 
   // редактирование профиля
@@ -139,70 +171,204 @@ const App = () => {
       .finally(() => {
         setTimeout(() => setUserMessage(false), 1000);
       });
-  }
+  };
 
-  // выход из аккаунта
+  // выход из аккаунта и очистка локального хранилища
   const handleLogOut = () => {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('keyword');
+    localStorage.removeItem('filteredMovies');
+    localStorage.removeItem('moviesArray');
+    localStorage.removeItem('checkbox');
+    localStorage.removeItem('checkboxSaved');
     setLoggedIn(false);
     navigate('/');
   };
 
+  // фильтрация по ключевым словам
+  const filterMovies = (movies, name) => {
+    return movies.filter((item) =>
+      item.nameRU.toLowerCase().includes(name.toLowerCase())
+    );
+  };
+
+  // поиск по всем фильмам
+  const searchMovies = (name) => {
+    if (!JSON.parse(localStorage.getItem('moviesArray'))) {
+      setIsLoading(true);
+      moviesApi
+        .getAllMovies()
+        .then((data) => {
+          localStorage.setItem('moviesArray', JSON.stringify(data));
+          setMovies(
+            filterMovies(JSON.parse(localStorage.getItem('moviesArray')), name)
+          );
+          localStorage.setItem('keyword', name);
+          localStorage.setItem('filteredMovies', JSON.stringify(movies));
+          localStorage.setItem('checkbox', checkbox);
+        })
+        .catch((err) => {
+          setMoviesError(true);
+          console.log(err);
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      setMovies(
+        filterMovies(JSON.parse(localStorage.getItem('moviesArray')), name)
+      );
+      localStorage.setItem('keyword', name);
+      localStorage.setItem('filteredMovies', JSON.stringify(movies));
+      localStorage.setItem('checkbox', checkbox);
+    }
+  };
+
+  // фильтрация по юзеру
+  const filterByOwner = (movies, currentUser) => {
+    return movies.filter((movie) => {
+      return movie.owner === currentUser._id;
+    });
+  };
+
+  // поиск по сохраненным фильмам
+  const searchSavedMovies = (name) => {
+    mainApi
+      .getMovies()
+      .then(() => {
+        localStorage.setItem('checkboxSaved', checkboxSaved);
+        const filteredByOnwer = filterByOwner(savedMoviesList, currentUser);
+        const filteredSavedMovies = filterMovies(filteredByOnwer, name);
+        setSavedMovies(filteredSavedMovies);
+      })
+      .catch((err) => {
+        setMoviesError(true);
+        console.log(err);
+      })
+    const filteredSavedMovies = filterMovies(savedMoviesList, name);
+    setSavedMovies(filteredSavedMovies);
+  };
+
+  // сохранение фильмов
+  const handleSaveMovie = (movie) => {
+    mainApi
+      .saveMovie(movie)
+      .then((newMovies) => {
+        setSavedMovies([newMovies, ...savedMovies]);
+        setSavedMoviesList([newMovies, ...savedMoviesList]);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  // удаление фильмов
+  const handleDeleteMovie = (movie) => {
+    mainApi
+      .deleteMovie(movie._id)
+      .then(() => {
+        setSavedMovies(savedMovies.filter((item) => item._id !== movie._id));
+        setSavedMoviesList(
+          savedMoviesList.filter((item) => item._id !== movie._id)
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+    // переключение чекбокса для всех фильмов и сохраненных фильмов
+    const handleToggleCheckMovies = () => {
+      setCheckbox(!checkbox);
+      localStorage.setItem('checkbox', !checkbox);
+    };
+
+    const handleToggleCheckSaved = () => {
+      setCheckboxSaved(!checkboxSaved);
+      localStorage.setItem('checkboxSaved', !checkboxSaved);
+    };
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
-     <div className="App">
-      <Header loggedIn={loggedIn} />
-      <main className="content">
-        <Routes>
-          <Route path="/" element={<Main />}/>
-          <Route path="/movies"
-          element={
-          <ProtectedRoute loggedIn={loggedIn}>
-             <Movies
-             movies={movies}
-             />
-          </ProtectedRoute>}
-          />
-          <Route path="/saved-movies"
-          element={
-          <ProtectedRoute loggedIn={loggedIn}>
-             <SavedMovies />
-          </ProtectedRoute>}
-          />
-          <Route path="/profile"
-          element={
-          <ProtectedRoute loggedIn={loggedIn}>
-             <Profile
-             handleLogOut={handleLogOut}
-             handleUpdateUser={handleUpdateUser}
-             userMessage={userMessage}
-             errorMessage={errorMessage}
-             isError={isError}
-             />
-          </ProtectedRoute>}
-          />
-          <Route path="/signup"
-          element={
-          <Register
-          handleRegister={handleRegister}
-          errorMessage={errorMessage}
-          isError={isError}/>
-          } />
-          <Route path="/signin"
-          element={
-          <Login
-          handleLogin={handleLogin}
-          errorMessage={errorMessage}
-          isError={isError}
-          />
-          } />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </main>
-      <Footer />
-      <Preloader isLoading={isLoading} />
-    </div>
-      </CurrentUserContext.Provider>
+      <div className='App'>
+        <Header loggedIn={loggedIn} />
+        <main className='content'>
+          <Routes>
+            <Route path='/' element={<Main />} />
+            <Route
+              path='/movies'
+              element={
+                <ProtectedRoute loggedIn={loggedIn}>
+                  <Movies
+                    movies={movies}
+                    moviesError={moviesError}
+                    handleDeleteMovie={handleDeleteMovie}
+                    handleSaveMovie={handleSaveMovie}
+                    searchMovies={searchMovies}
+                    savedMovies={savedMovies}
+                    savedMoviesList={savedMoviesList}
+                    keyword={keyword}
+                    checkbox={checkbox}
+                    checkboxSaved={checkboxSaved}
+                    handleToggleCheckMovies={handleToggleCheckMovies}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/saved-movies'
+              element={
+                <ProtectedRoute loggedIn={loggedIn}>
+                  <SavedMovies
+                    searchSavedMovies={searchSavedMovies}
+                    keyword={keyword}
+                    savedMovies={savedMovies}
+                    savedMoviesList={savedMoviesList}
+                    handleDeleteMovie={handleDeleteMovie}
+                    checkboxSaved={checkboxSaved}
+                    handleToggleCheckSaved={handleToggleCheckSaved}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/profile'
+              element={
+                <ProtectedRoute loggedIn={loggedIn}>
+                  <Profile
+                    handleLogOut={handleLogOut}
+                    handleUpdateUser={handleUpdateUser}
+                    userMessage={userMessage}
+                    errorMessage={errorMessage}
+                    isError={isError}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/signup'
+              element={
+                <Register
+                  handleRegister={handleRegister}
+                  errorMessage={errorMessage}
+                  isError={isError}
+                />
+              }
+            />
+            <Route
+              path='/signin'
+              element={
+                <Login
+                  handleLogin={handleLogin}
+                  errorMessage={errorMessage}
+                  isError={isError}
+                />
+              }
+            />
+            <Route path='*' element={<PageNotFound />} />
+          </Routes>
+        </main>
+        <Footer />
+        <Preloader isLoading={isLoading} />
+      </div>
+    </CurrentUserContext.Provider>
   );
 };
 
