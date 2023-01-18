@@ -52,7 +52,7 @@
 }
 
 .movies__message {
-    color: #3ddc84;
+    color: #8B8B8B;
     margin-bottom: 20px;
     font-size: 18px;
     display: block;
@@ -63,6 +63,7 @@
 
   .movies__message_error {
     color: #EE3465;
+    font-size: 14px;
   }
 
   .movies__message_hidden {

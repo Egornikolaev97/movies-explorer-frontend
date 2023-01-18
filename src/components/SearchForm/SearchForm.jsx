@@ -14,8 +14,8 @@ const SearchForm = ({
   handleToggleCheckSaved,
 }) => {
   const [movieValues, setMovieValues] = useState('');
+  const [searchMessage, setSearchMessage] = useState('');
   const location = useLocation();
-
 
   const moviesPath = location.pathname === '/movies';
   useEffect(() => {
@@ -29,18 +29,19 @@ const SearchForm = ({
     setMovieValues(e.target.value);
   };
 
+  const searchToggling = () => {
+    moviesPath
+    ? searchMovies(movieValues)
+    : searchSavedMovies(movieValues);
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (movieValues === '') {
-
-
-    }
-    if (moviesPath) {
-      searchMovies(movieValues);
-    } else {
-      searchSavedMovies(movieValues);
-    }
-  }
+    setSearchMessage('');
+    return movieValues
+      ? searchToggling(movieValues)
+      : setSearchMessage('Введите ключевое слово');
+  };
 
   return (
     <section className='search content-page'>
@@ -49,6 +50,7 @@ const SearchForm = ({
           className='search__form'
           action='search'
           onSubmit={handleSubmit}
+          noValidate
         >
           <div className='search__item'>
             <img className='search__icon' src={search} alt='поиск' />
@@ -65,11 +67,12 @@ const SearchForm = ({
             <img className='search__icon' src={search} alt='поиск' />
           </button>
         </form>
+        <span className='search__message'>{searchMessage}</span>
         <FilterCheckBox
-        checkbox={checkbox}
-        checkboxSaved={checkboxSaved}
-        handleToggleCheckMovies={handleToggleCheckMovies}
-        handleToggleCheckSaved={handleToggleCheckSaved}
+          checkbox={checkbox}
+          checkboxSaved={checkboxSaved}
+          handleToggleCheckMovies={handleToggleCheckMovies}
+          handleToggleCheckSaved={handleToggleCheckSaved}
         />
       </div>
     </section>

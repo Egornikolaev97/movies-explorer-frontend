@@ -22,6 +22,8 @@ const notFoundErrors = {
     404: "404 Страница по указанному маршруту не найдена."
   }
 
+
+
 module.exports = {
     serverErrors,
     notFoundErrors,

@@ -10,7 +10,8 @@ const MoviesCardList = ({
   handleSaveMovie,
   checkbox,
   checkboxSaved,
-  moviesError,
+  search,
+  isError,
 }) => {
   // ширина экрана
   const [widthWindow, setWidthWindow] = useState(window.innerWidth);
@@ -18,6 +19,8 @@ const MoviesCardList = ({
   const [cardsAmount, setCardsAmount] = useState(12);
   // переменная для добавления карточек при нажатии кнопки "ещё"
   const [moreCards, setMoreCards] = useState(3);
+  // сообщение для пользователя при неудачном поиске
+  const [moviesMessage, setMoviesMessage] = useState('');
 
   const location = useLocation();
   const savedMoviesPath = location.pathname === '/saved-movies';
@@ -73,35 +76,36 @@ const MoviesCardList = ({
       ? 'movies__btn_hidden'
       : 'movies__btn';
 
-  const spanNotFoundMovies = !moviesArray?.length
+  useEffect(() => {
+    if (search && moviesArray.length === 0) {
+       setMoviesMessage('Ничего не найдено :(');
+    } else {
+      setMoviesMessage('');
+    }
+  }, [search]);
+
+  useEffect(() => {
+    if (search && savedMoviesArr.length === 0) {
+       setMoviesMessage('Ничего не найдено :(');
+    } else {
+      setMoviesMessage('');
+    }
+  }, [search]);
+
+  const arrayLengthisNull = savedMoviesPath
+    ? !savedMoviesArr?.length
+    : !moviesArray?.length;
+
+  const spanNotFound = arrayLengthisNull
     ? 'movies__message'
     : 'movies__message_hidden';
 
-  const textNotFoundMovies = !moviesArray?.length ? 'Ничего не найдено' : '';
+  const spanTextError = isError
+  ? 'movies__message movies__message_error'
+  : 'movies__message_hidden';
 
-  const spanNotFoundSaved = !savedMoviesArr?.length
-    ? 'movies__message'
-    : 'movies__message_hidden';
-
-  const textNotFoundSaved = !savedMoviesArr?.length ? 'Ничего не найдено' : '';
-
-  const spanErrorMovies = moviesError
-    ? 'movies__message_error'
-    : 'movies__message_hidden';
-
-  const textErrorMovies = !moviesArray?.length
-    ? `Во время запроса произошла ошибка. Возможно, проблема
-     с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`
-    : '';
-
-  const spanErrorSaved = moviesError
-    ? 'movies__message_error'
-    : 'movies__message_hidden';
-
-  const textErrorSaved = !moviesArray?.length
-    ? `Во время запроса произошла ошибка. Возможно, проблема
-     с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`
-    : '';
+  const messageError =
+    'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз';
 
   return (
     <section className='movies'>
@@ -121,8 +125,8 @@ const MoviesCardList = ({
                 );
               })}
             </ul>
-            <span className={spanErrorSaved}>{textErrorSaved}</span>
-            <span className={spanNotFoundSaved}>{textNotFoundSaved}</span>
+            <span className={spanNotFound}>{!isError && moviesMessage}</span>
+            <span className={spanTextError}>{isError && messageError}</span>
           </>
         ) : (
           <>
@@ -140,8 +144,8 @@ const MoviesCardList = ({
                   );
                 })}
             </ul>
-            <span className={spanErrorMovies}>{textErrorMovies}</span>
-            <span className={spanNotFoundMovies}>{textNotFoundMovies}</span>
+            <span className={spanNotFound}>{!isError && moviesMessage}</span>
+            <span className={spanTextError}>{isError && messageError}</span>
             <button
               className={moviesButton}
               type='button'

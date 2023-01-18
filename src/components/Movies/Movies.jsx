@@ -14,7 +14,8 @@ const Movies = ({
   savedMoviesList,
   handleToggleCheckMovies,
   handleToggleCheckSaved,
-  moviesError
+  search,
+  isError,
 }) => {
 
   return (
@@ -28,7 +29,8 @@ const Movies = ({
         />
       <MoviesCardList
         movies={movies}
-        moviesError={moviesError}
+        search={search}
+        isError={isError}
         savedMovies={savedMovies}
         savedMoviesList={savedMoviesList}
         handleDeleteMovie={handleDeleteMovie}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import './App.css';
@@ -41,10 +42,11 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('');
   // С помощью переменной проверяем, возникала ли ошибка при отрпавлении формы
   const [isError, setIsError] = useState(false);
-  // стейт для проверки ошибки во время поиска
-  const [moviesError, setMoviesError] = useState(false);
+  // Проверяем, завершился ли поиск
+  const [search, setSearch] = useState(false);
   // переменные для фильмов
   const [movies, setMovies] = useState([]);
+  // переменные для сохраненных фильмов
   const [savedMovies, setSavedMovies] = useState([]);
   const [savedMoviesList, setSavedMoviesList] = useState([]);
   // ключевое слово/симфол импута
@@ -181,6 +183,9 @@ const App = () => {
     localStorage.removeItem('moviesArray');
     localStorage.removeItem('checkbox');
     localStorage.removeItem('checkboxSaved');
+    setMovies([]);
+    setSavedMovies([]);
+    setCurrentUser({});
     setLoggedIn(false);
     navigate('/');
   };
@@ -194,12 +199,15 @@ const App = () => {
 
   // поиск по всем фильмам
   const searchMovies = (name) => {
+    setSearch(false);
+    setIsError(false);
     if (!JSON.parse(localStorage.getItem('moviesArray'))) {
       setIsLoading(true);
       moviesApi
         .getAllMovies()
         .then((data) => {
           localStorage.setItem('moviesArray', JSON.stringify(data));
+          setIsLoading(true);
           setMovies(
             filterMovies(JSON.parse(localStorage.getItem('moviesArray')), name)
           );
@@ -207,11 +215,11 @@ const App = () => {
           localStorage.setItem('filteredMovies', JSON.stringify(movies));
           localStorage.setItem('checkbox', checkbox);
         })
+        .finally(() => setIsLoading(false))
         .catch((err) => {
-          setMoviesError(true);
+          setIsError(true);
           console.log(err);
         })
-        .finally(() => setIsLoading(false));
     } else {
       setMovies(
         filterMovies(JSON.parse(localStorage.getItem('moviesArray')), name)
@@ -220,6 +228,7 @@ const App = () => {
       localStorage.setItem('filteredMovies', JSON.stringify(movies));
       localStorage.setItem('checkbox', checkbox);
     }
+    setSearch(true);
   };
 
   // фильтрация по юзеру
@@ -231,20 +240,22 @@ const App = () => {
 
   // поиск по сохраненным фильмам
   const searchSavedMovies = (name) => {
+    setSearch(false);
     mainApi
-      .getMovies()
-      .then(() => {
+    .getMovies()
+    .then(() => {
         localStorage.setItem('checkboxSaved', checkboxSaved);
         const filteredByOnwer = filterByOwner(savedMoviesList, currentUser);
         const filteredSavedMovies = filterMovies(filteredByOnwer, name);
         setSavedMovies(filteredSavedMovies);
       })
       .catch((err) => {
-        setMoviesError(true);
+        setIsError(true);
         console.log(err);
       })
     const filteredSavedMovies = filterMovies(savedMoviesList, name);
     setSavedMovies(filteredSavedMovies);
+    setSearch(true);
   };
 
   // сохранение фильмов
@@ -273,17 +284,16 @@ const App = () => {
       });
   };
 
-    // переключение чекбокса для всех фильмов и сохраненных фильмов
-    const handleToggleCheckMovies = () => {
-      setCheckbox(!checkbox);
-      localStorage.setItem('checkbox', !checkbox);
-    };
+  // переключение чекбокса для всех фильмов и сохраненных фильмов
+  const handleToggleCheckMovies = () => {
+    setCheckbox(!checkbox);
+    localStorage.setItem('checkbox', !checkbox);
+  };
 
-    const handleToggleCheckSaved = () => {
-      setCheckboxSaved(!checkboxSaved);
-      localStorage.setItem('checkboxSaved', !checkboxSaved);
-    };
-
+  const handleToggleCheckSaved = () => {
+    setCheckboxSaved(!checkboxSaved);
+    localStorage.setItem('checkboxSaved', !checkboxSaved);
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -298,7 +308,8 @@ const App = () => {
                 <ProtectedRoute loggedIn={loggedIn}>
                   <Movies
                     movies={movies}
-                    moviesError={moviesError}
+                    search={search}
+                    isError={isError}
                     handleDeleteMovie={handleDeleteMovie}
                     handleSaveMovie={handleSaveMovie}
                     searchMovies={searchMovies}

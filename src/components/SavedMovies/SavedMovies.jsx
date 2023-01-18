@@ -1,7 +1,6 @@
 import './SavedMovies.css';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import React, { useState, useEffect } from 'react';
 
 const SavedMovies = ({
   savedMovies,
