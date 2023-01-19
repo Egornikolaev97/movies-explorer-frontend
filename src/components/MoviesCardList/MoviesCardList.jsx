@@ -84,15 +84,15 @@ const MoviesCardList = ({
     } else {
       setMoviesMessage('');
     }
-  }, [search]);
+  }, [search, moviesArray]);
 
   useEffect(() => {
-    if (search && !moviesArray?.length) {
+    if (search && !savedMoviesArr?.length) {
       setSavedMoviesMessage('Ничего не найдено :(');
     } else {
       setSavedMoviesMessage('');
     }
-  }, []);
+  }, [search, savedMoviesArr]);
 
   const arrayLengthisNull = savedMoviesPath
     ? savedMoviesArr.length === 0

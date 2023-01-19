@@ -17,9 +17,8 @@ const Movies = ({
   search,
   setSearch,
   isError,
-  isLoading
+  isLoading,
 }) => {
-
   return (
     <>
       <SearchForm
@@ -28,10 +27,13 @@ const Movies = ({
         checkbox={checkbox}
         handleToggleCheckMovies={handleToggleCheckMovies}
         handleToggleCheckSaved={handleToggleCheckSaved}
-        />
+        search={search}
+        setSearch={setSearch}
+      />
       <MoviesCardList
         movies={movies}
         search={search}
+        setSearch={setSearch}
         isError={isError}
         savedMovies={savedMovies}
         savedMoviesList={savedMoviesList}
