@@ -13,6 +13,7 @@ const SavedMovies = ({
   handleToggleCheckSaved,
   handleChangeCheckbox,
   search,
+  searchSaved,
   setSearch,
 }) => {
   return (
@@ -28,6 +29,7 @@ const SavedMovies = ({
       />
       <MoviesCardList
         search={search}
+        searchSaved={searchSaved}
         setSearch={search}
         allSavedMovies={allSavedMovies}
         savedMovies={savedMovies}

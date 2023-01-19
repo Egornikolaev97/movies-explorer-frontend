@@ -44,9 +44,10 @@ const App = () => {
   const [isError, setIsError] = useState(false);
   // Проверяем, завершился ли поиск
   const [search, setSearch] = useState(false);
+  const [searchSaved, setSearchSaved] = useState(false);
   // переменные для фильмов
   const [movies, setMovies] = useState([]);
-  // переменные для сохраненных фильмов
+  // переменные для сохраненных фильмов/сохраненных фильмов
   const [savedMovies, setSavedMovies] = useState([]);
   const [savedMoviesList, setSavedMoviesList] = useState([]);
   // ключевое слово/симфол импута
@@ -123,6 +124,8 @@ const App = () => {
   const handleLogin = ({ email, password }) => {
     setIsLoading(true);
     setIsError(false);
+    setSearch(false);
+    setSearchSaved(false);
     mainApi
       .login(email, password)
       .then((res) => {
@@ -215,6 +218,7 @@ const App = () => {
           localStorage.setItem('keyword', name);
           localStorage.setItem('filteredMovies', JSON.stringify(movies));
           localStorage.setItem('checkbox', checkbox);
+          setSearch(true);
         })
         .finally(() => setIsLoading(false))
         .catch((err) => {
@@ -228,8 +232,8 @@ const App = () => {
       localStorage.setItem('keyword', name);
       localStorage.setItem('filteredMovies', JSON.stringify(movies));
       localStorage.setItem('checkbox', checkbox);
+      setSearch(true);
     }
-    setSearch(true);
   };
 
   // фильтрация по юзеру
@@ -241,7 +245,8 @@ const App = () => {
 
   // поиск по сохраненным фильмам
   const searchSavedMovies = (name) => {
-    setSearch(false);
+    // setSearch(false);
+    setSearchSaved(false);
     mainApi
     .getMovies()
     .then(() => {
@@ -249,6 +254,7 @@ const App = () => {
         const filteredByOnwer = filterByOwner(savedMoviesList, currentUser);
         const filteredSavedMovies = filterMovies(filteredByOnwer, name);
         setSavedMovies(filteredSavedMovies);
+        // setSearchSaved(true);
       })
       .catch((err) => {
         setIsError(true);
@@ -256,7 +262,8 @@ const App = () => {
       })
     const filteredSavedMovies = filterMovies(savedMoviesList, name);
     setSavedMovies(filteredSavedMovies)
-    setSearch(true);
+    // setSearch(true);
+    setSearchSaved(true);
   };
 
   // сохранение фильмов
@@ -311,6 +318,7 @@ const App = () => {
                     movies={movies}
                     search={search}
                     setSearch={search}
+                    searchSaved={searchSaved}
                     isError={isError}
                     isLoading={isLoading}
                     handleDeleteMovie={handleDeleteMovie}
@@ -332,6 +340,7 @@ const App = () => {
                 <ProtectedRoute loggedIn={loggedIn}>
                   <SavedMovies
                     searchSavedMovies={searchSavedMovies}
+                    searchSaved={searchSaved}
                     search={search}
                     setSearch={search}
                     keyword={keyword}

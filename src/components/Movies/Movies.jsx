@@ -14,8 +14,9 @@ const Movies = ({
   savedMoviesList,
   handleToggleCheckMovies,
   handleToggleCheckSaved,
-  search,
   setSearch,
+  search,
+  searchSaved,
   isError,
   isLoading,
 }) => {
@@ -33,6 +34,7 @@ const Movies = ({
       <MoviesCardList
         movies={movies}
         search={search}
+        searchSaved={searchSaved}
         setSearch={setSearch}
         isError={isError}
         savedMovies={savedMovies}

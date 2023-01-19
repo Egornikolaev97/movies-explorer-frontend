@@ -11,7 +11,10 @@ const MoviesCardList = ({
   checkbox,
   checkboxSaved,
   search,
+  setSearch,
+  searchSaved,
   isError,
+  isLoading,
 }) => {
   // ширина экрана
   const [widthWindow, setWidthWindow] = useState(window.innerWidth);
@@ -77,22 +80,39 @@ const MoviesCardList = ({
       ? 'movies__btn_hidden'
       : 'movies__btn';
 
-  useEffect(() => {
-    if (search && !moviesArray?.length) {
-      console.log(search);
-      setMoviesMessage('Ничего не найдено :(');
-    } else {
-      setMoviesMessage('');
-    }
-  }, [search, moviesArray]);
+  const messageMoviesPage = search ? 'Ничего не найдено :(' : 'Начните поиск';
+  const messageSavedMoviesPage = searchSaved
+    ? 'Ничего не найдено :('
+    : 'Вы ещё ничего не сохранили';
 
-  useEffect(() => {
-    if (search && !savedMoviesArr?.length) {
-      setSavedMoviesMessage('Ничего не найдено :(');
-    } else {
-      setSavedMoviesMessage('');
+  // После логина появляется сообщение "Начните поиск",
+  // при неудачном поиске - сообщение "Ничего не найдено :("
+  const handleMessageMovies = () => {
+    if (moviesArray.length === 0) {
+      if (!isLoading) {
+        setMoviesMessage(messageMoviesPage);
+      } else {
+        setMoviesMessage('');
+      }
     }
-  }, [search, savedMoviesArr]);
+  };
+
+  // После логина появляется сообщение "Вы ещё ничего не сохранили",
+  // при неудачном поиске - сообщение "Ничего не найдено :("
+  const handleMessageSavedMovies = () => {
+    if (savedMoviesArr.length === 0) {
+      setSavedMoviesMessage(messageSavedMoviesPage);
+    }
+  };
+
+  // При загрузке страницы устанавливаем стейт для сообщения
+  useEffect(() => {
+    if (savedMoviesPath) {
+      handleMessageSavedMovies();
+    } else {
+      handleMessageMovies();
+    }
+  });
 
   const arrayLengthisNull = savedMoviesPath
     ? savedMoviesArr.length === 0
@@ -127,7 +147,9 @@ const MoviesCardList = ({
                 );
               })}
             </ul>
-            <span className={spanNotFound}>{!isError && savedMoviesMessage}</span>
+            <span className={spanNotFound}>
+              {!isError && savedMoviesMessage}
+            </span>
             <span className={spanTextError}>{isError && messageError}</span>
           </>
         ) : (
