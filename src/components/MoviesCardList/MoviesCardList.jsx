@@ -21,6 +21,7 @@ const MoviesCardList = ({
   const [moreCards, setMoreCards] = useState(3);
   // сообщение для пользователя при неудачном поиске
   const [moviesMessage, setMoviesMessage] = useState('');
+  const [savedMoviesMessage, setSavedMoviesMessage] = useState('');
 
   const location = useLocation();
   const savedMoviesPath = location.pathname === '/saved-movies';
@@ -77,32 +78,33 @@ const MoviesCardList = ({
       : 'movies__btn';
 
   useEffect(() => {
-    if (search && moviesArray.length === 0) {
-       setMoviesMessage('Ничего не найдено :(');
+    if (search && !moviesArray?.length) {
+      console.log(search);
+      setMoviesMessage('Ничего не найдено :(');
     } else {
       setMoviesMessage('');
     }
   }, [search]);
 
   useEffect(() => {
-    if (search && savedMoviesArr.length === 0) {
-       setMoviesMessage('Ничего не найдено :(');
+    if (search && !moviesArray?.length) {
+      setSavedMoviesMessage('Ничего не найдено :(');
     } else {
-      setMoviesMessage('');
+      setSavedMoviesMessage('');
     }
-  }, [search]);
+  }, []);
 
   const arrayLengthisNull = savedMoviesPath
-    ? !savedMoviesArr?.length
-    : !moviesArray?.length;
+    ? savedMoviesArr.length === 0
+    : moviesArray.length === 0;
 
   const spanNotFound = arrayLengthisNull
     ? 'movies__message'
     : 'movies__message_hidden';
 
   const spanTextError = isError
-  ? 'movies__message movies__message_error'
-  : 'movies__message_hidden';
+    ? 'movies__message movies__message_error'
+    : 'movies__message_hidden';
 
   const messageError =
     'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз';
@@ -125,24 +127,24 @@ const MoviesCardList = ({
                 );
               })}
             </ul>
-            <span className={spanNotFound}>{!isError && moviesMessage}</span>
+            <span className={spanNotFound}>{!isError && savedMoviesMessage}</span>
             <span className={spanTextError}>{isError && messageError}</span>
           </>
         ) : (
           <>
             <ul className='movies__list'>
-              {moviesArray.length > 0 &&
-                moviesArray.slice(0, cardsAmount).map((movie) => {
-                  return (
-                    <MoviesCard
-                      savedMovies={savedMovies}
-                      key={movie.id}
-                      movie={movie}
-                      handleSaveMovie={handleSaveMovie}
-                      handleDeleteMovie={handleDeleteMovie}
-                    />
-                  );
-                })}
+              {/* {moviesArray.length > 0 && */}
+              {moviesArray.slice(0, cardsAmount).map((movie) => {
+                return (
+                  <MoviesCard
+                    savedMovies={savedMovies}
+                    key={movie.id}
+                    movie={movie}
+                    handleSaveMovie={handleSaveMovie}
+                    handleDeleteMovie={handleDeleteMovie}
+                  />
+                );
+              })}
             </ul>
             <span className={spanNotFound}>{!isError && moviesMessage}</span>
             <span className={spanTextError}>{isError && messageError}</span>

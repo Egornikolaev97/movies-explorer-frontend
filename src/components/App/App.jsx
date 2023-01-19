@@ -185,6 +185,7 @@ const App = () => {
     localStorage.removeItem('checkboxSaved');
     setMovies([]);
     setSavedMovies([]);
+    setSavedMoviesList([]);
     setCurrentUser({});
     setLoggedIn(false);
     navigate('/');
@@ -254,7 +255,7 @@ const App = () => {
         console.log(err);
       })
     const filteredSavedMovies = filterMovies(savedMoviesList, name);
-    setSavedMovies(filteredSavedMovies);
+    setSavedMovies(filteredSavedMovies)
     setSearch(true);
   };
 
@@ -309,7 +310,9 @@ const App = () => {
                   <Movies
                     movies={movies}
                     search={search}
+                    setSearch={search}
                     isError={isError}
+                    isLoading={isLoading}
                     handleDeleteMovie={handleDeleteMovie}
                     handleSaveMovie={handleSaveMovie}
                     searchMovies={searchMovies}
@@ -329,6 +332,8 @@ const App = () => {
                 <ProtectedRoute loggedIn={loggedIn}>
                   <SavedMovies
                     searchSavedMovies={searchSavedMovies}
+                    search={search}
+                    setSearch={search}
                     keyword={keyword}
                     savedMovies={savedMovies}
                     savedMoviesList={savedMoviesList}

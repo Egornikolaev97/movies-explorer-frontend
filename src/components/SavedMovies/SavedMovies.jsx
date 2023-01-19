@@ -12,18 +12,23 @@ const SavedMovies = ({
   checkboxSaved,
   handleToggleCheckSaved,
   handleChangeCheckbox,
+  search,
+  setSearch,
 }) => {
-
   return (
     <>
       <SearchForm
         searchSavedMovies={searchSavedMovies}
         keyword={keyword}
+        search={search}
+        setSearch={search}
         checkboxSaved={checkboxSaved}
         handleChangeCheckbox={handleChangeCheckbox}
         handleToggleCheckSaved={handleToggleCheckSaved}
       />
       <MoviesCardList
+        search={search}
+        setSearch={search}
         allSavedMovies={allSavedMovies}
         savedMovies={savedMovies}
         handleDeleteMovie={handleDeleteMovie}

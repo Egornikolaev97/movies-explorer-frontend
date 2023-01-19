@@ -15,7 +15,9 @@ const Movies = ({
   handleToggleCheckMovies,
   handleToggleCheckSaved,
   search,
+  setSearch,
   isError,
+  isLoading
 }) => {
 
   return (
@@ -36,6 +38,7 @@ const Movies = ({
         handleDeleteMovie={handleDeleteMovie}
         handleSaveMovie={handleSaveMovie}
         checkbox={checkbox}
+        isLoading={isLoading}
         checkboxSaved={checkboxSaved}
       />
     </>
