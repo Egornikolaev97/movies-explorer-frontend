@@ -190,6 +190,8 @@ const App = () => {
     setSavedMovies([]);
     setSavedMoviesList([]);
     setCurrentUser({});
+    setCheckbox(false);
+    setCheckboxSaved(false);
     setLoggedIn(false);
     navigate('/');
   };
@@ -245,7 +247,6 @@ const App = () => {
 
   // поиск по сохраненным фильмам
   const searchSavedMovies = (name) => {
-    // setSearch(false);
     setSearchSaved(false);
     mainApi
     .getMovies()
@@ -254,7 +255,6 @@ const App = () => {
         const filteredByOnwer = filterByOwner(savedMoviesList, currentUser);
         const filteredSavedMovies = filterMovies(filteredByOnwer, name);
         setSavedMovies(filteredSavedMovies);
-        // setSearchSaved(true);
       })
       .catch((err) => {
         setIsError(true);
@@ -262,7 +262,6 @@ const App = () => {
       })
     const filteredSavedMovies = filterMovies(savedMoviesList, name);
     setSavedMovies(filteredSavedMovies)
-    // setSearch(true);
     setSearchSaved(true);
   };
 
