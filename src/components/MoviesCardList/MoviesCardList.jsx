@@ -14,6 +14,7 @@ const MoviesCardList = ({
   setSearch,
   searchSaved,
   isError,
+  isErrorMovies,
   isLoading,
 }) => {
   // ширина экрана
@@ -124,7 +125,7 @@ const MoviesCardList = ({
     : 'movies__message_hidden';
 
   // Устанавливаем класс для сообщения об ошибке
-  const spanTextError = isError
+  const spanTextError = isErrorMovies
     ? 'movies__message movies__message_error'
     : 'movies__message_hidden';
 
@@ -150,14 +151,13 @@ const MoviesCardList = ({
               })}
             </ul>
             <span className={spanNotFound}>
-              {!isError && savedMoviesMessage}
+              {!isErrorMovies && savedMoviesMessage}
             </span>
-            <span className={spanTextError}>{isError && messageError}</span>
+            <span className={spanTextError}>{isErrorMovies && messageError}</span>
           </>
         ) : (
           <>
             <ul className='movies__list'>
-              {/* {moviesArray.length > 0 && */}
               {moviesArray.slice(0, cardsAmount).map((movie) => {
                 return (
                   <MoviesCard
@@ -170,8 +170,8 @@ const MoviesCardList = ({
                 );
               })}
             </ul>
-            <span className={spanNotFound}>{!isError && moviesMessage}</span>
-            <span className={spanTextError}>{isError && messageError}</span>
+            <span className={spanNotFound}>{!isErrorMovies && moviesMessage}</span>
+            <span className={spanTextError}>{isErrorMovies && messageError}</span>
             <button
               className={moviesButton}
               type='button'

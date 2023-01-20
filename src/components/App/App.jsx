@@ -42,6 +42,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('');
   // С помощью переменной проверяем, возникала ли ошибка при отрпавлении формы
   const [isError, setIsError] = useState(false);
+  const [isErrorMovies, setIsErrorMovies] = useState(false);
   // Проверяем, завершился ли поиск
   const [search, setSearch] = useState(false);
   const [searchSaved, setSearchSaved] = useState(false);
@@ -319,6 +320,7 @@ const App = () => {
                     setSearch={search}
                     searchSaved={searchSaved}
                     isError={isError}
+                    isErrorMovies={isErrorMovies}
                     isLoading={isLoading}
                     handleDeleteMovie={handleDeleteMovie}
                     handleSaveMovie={handleSaveMovie}
@@ -362,6 +364,7 @@ const App = () => {
                     userMessage={userMessage}
                     errorMessage={errorMessage}
                     isError={isError}
+                    setIsError={setIsError}
                   />
                 </ProtectedRoute>
               }
@@ -373,6 +376,7 @@ const App = () => {
                   handleRegister={handleRegister}
                   errorMessage={errorMessage}
                   isError={isError}
+                  setIsError={setIsError}
                 />
               }
             />
@@ -383,6 +387,7 @@ const App = () => {
                   handleLogin={handleLogin}
                   errorMessage={errorMessage}
                   isError={isError}
+                  setIsError={setIsError}
                 />
               }
             />

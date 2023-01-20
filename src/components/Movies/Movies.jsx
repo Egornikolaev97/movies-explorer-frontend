@@ -18,6 +18,7 @@ const Movies = ({
   search,
   searchSaved,
   isError,
+  isErrorMovies,
   isLoading,
 }) => {
   return (
@@ -37,6 +38,7 @@ const Movies = ({
         searchSaved={searchSaved}
         setSearch={setSearch}
         isError={isError}
+        isErrorMovies={isErrorMovies}
         savedMovies={savedMovies}
         savedMoviesList={savedMoviesList}
         handleDeleteMovie={handleDeleteMovie}

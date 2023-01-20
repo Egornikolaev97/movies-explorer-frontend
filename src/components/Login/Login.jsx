@@ -4,10 +4,11 @@ import {NavLink} from 'react-router-dom';
 import React, {useEffect} from 'react';
 import useFormValidation from '../../hooks/useFormValidation.js';
 
-  const Login = ({ handleLogin, errorMessage, isError }) => {
+  const Login = ({ handleLogin, errorMessage, isError, setIsError }) => {
     const {values, errors, isValid, resetForm, handleChange, setIsValid } = useFormValidation();
 
-    // Очистка полей формы
+    // Очистка полей формы и удаление сообщение об
+    // ошибки при переходе на страницу "регистрация"
     useEffect(() => {
       resetForm({
           email: "",
@@ -16,6 +17,7 @@ import useFormValidation from '../../hooks/useFormValidation.js';
         {},
         false
       );
+      setIsError(false);
     }, [resetForm]);
 
     // Отправка данных формы

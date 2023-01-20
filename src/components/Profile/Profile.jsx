@@ -8,6 +8,7 @@ const Profile = ({
   handleUpdateUser,
   userMessage,
   isError,
+  setIsError,
   errorMessage,
 }) => {
   const {
@@ -53,6 +54,7 @@ const Profile = ({
 
   // Сверяем введенные данные в поля формы с данными текущего пользователя
   useEffect(() => {
+    setIsError(false);
     return values.name !== currentUser.name ||
       values.email !== currentUser.email
       ? setIsValid(true)
@@ -63,6 +65,7 @@ const Profile = ({
     currentUser.name,
     currentUser.email,
     setIsValid,
+    // setIsError,
   ]);
 
   // Задаем значение "валидна" или "невалидна" для полей формы,
