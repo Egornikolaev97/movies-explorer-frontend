@@ -118,10 +118,12 @@ const MoviesCardList = ({
     ? savedMoviesArr.length === 0
     : moviesArray.length === 0;
 
+  // Устанавливаем класс для сообщения
   const spanNotFound = arrayLengthisNull
     ? 'movies__message'
     : 'movies__message_hidden';
 
+  // Устанавливаем класс для сообщения об ошибке
   const spanTextError = isError
     ? 'movies__message movies__message_error'
     : 'movies__message_hidden';

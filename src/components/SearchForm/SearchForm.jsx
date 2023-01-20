@@ -17,9 +17,10 @@ const SearchForm = ({
 }) => {
   const [movieValues, setMovieValues] = useState('');
   const [searchMessage, setSearchMessage] = useState('');
-  const location = useLocation();
 
+  const location = useLocation();
   const moviesPath = location.pathname === '/movies';
+
   useEffect(() => {
     if (keyword && moviesPath) {
       setMovieValues(keyword);
