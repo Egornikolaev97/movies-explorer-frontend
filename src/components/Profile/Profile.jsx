@@ -65,7 +65,7 @@ const Profile = ({
     currentUser.name,
     currentUser.email,
     setIsValid,
-    // setIsError,
+    setIsError,
   ]);
 
   // Задаем значение "валидна" или "невалидна" для полей формы,

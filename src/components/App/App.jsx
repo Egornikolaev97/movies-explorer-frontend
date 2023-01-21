@@ -14,6 +14,7 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import Preloader from '../Preloader/Preloader';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../context/currentUserContext';
+import { useLocation, Navigate } from 'react-router-dom';
 import {
   serverErrors,
   updateErrors,
@@ -57,12 +58,14 @@ const App = () => {
   const [checkbox, setCheckbox] = useState(false);
   const [checkboxSaved, setCheckboxSaved] = useState(false);
 
+  const location = useLocation();
+
   // Редирект на страницу с фильмами, если юзер залогинен
-  useEffect(() => {
-    if (loggedIn) {
-      navigate('/movies');
-    }
-  }, [loggedIn]);
+  // useEffect(() => {
+  //   if (loggedIn) {
+  //     navigate(location.pathname);
+  //   }
+  // }, [loggedIn]);
 
   // Получение данных пользователя при загрузке страницы
   useEffect(() => {
@@ -105,7 +108,7 @@ const App = () => {
         .checkToken(jwt)
         .then(() => {
           setLoggedIn(true);
-          navigate('/movies');
+          navigate(location.pathname);
         })
         .catch((err) => {
           console.log(`Ошибка: ${err}`);
@@ -133,6 +136,7 @@ const App = () => {
         localStorage.setItem('jwt', res.token);
         setLoggedIn(true);
         mainApi.setToken(res.token);
+        navigate('/movies');
       })
       .catch((err) => {
         errorGenerator(loginErrors, err);
@@ -207,7 +211,7 @@ const App = () => {
   // поиск по всем фильмам
   const searchMovies = (name) => {
     setSearch(false);
-    setIsError(false);
+    setIsErrorMovies(false);
     if (!JSON.parse(localStorage.getItem('moviesArray'))) {
       setIsLoading(true);
       moviesApi
@@ -225,9 +229,9 @@ const App = () => {
         })
         .finally(() => setIsLoading(false))
         .catch((err) => {
-          setIsError(true);
+          setIsErrorMovies(true);
           console.log(err);
-        })
+        });
     } else {
       setMovies(
         filterMovies(JSON.parse(localStorage.getItem('moviesArray')), name)
@@ -249,20 +253,21 @@ const App = () => {
   // поиск по сохраненным фильмам
   const searchSavedMovies = (name) => {
     setSearchSaved(false);
+    setIsErrorMovies(false);
     mainApi
-    .getMovies()
-    .then(() => {
+      .getMovies()
+      .then(() => {
         localStorage.setItem('checkboxSaved', checkboxSaved);
         const filteredByOnwer = filterByOwner(savedMoviesList, currentUser);
         const filteredSavedMovies = filterMovies(filteredByOnwer, name);
         setSavedMovies(filteredSavedMovies);
       })
       .catch((err) => {
-        setIsError(true);
         console.log(err);
-      })
+        setIsErrorMovies(true);
+      });
     const filteredSavedMovies = filterMovies(savedMoviesList, name);
-    setSavedMovies(filteredSavedMovies)
+    setSavedMovies(filteredSavedMovies);
     setSearchSaved(true);
   };
 
@@ -372,23 +377,31 @@ const App = () => {
             <Route
               path='/signup'
               element={
-                <Register
+                !loggedIn ? (
+                  <Register
                   handleRegister={handleRegister}
                   errorMessage={errorMessage}
                   isError={isError}
                   setIsError={setIsError}
                 />
+                ) : (
+                  <Navigate to='/' />
+                )
               }
             />
             <Route
               path='/signin'
               element={
-                <Login
+                !loggedIn ? (
+                  <Register
                   handleLogin={handleLogin}
                   errorMessage={errorMessage}
                   isError={isError}
                   setIsError={setIsError}
                 />
+                ) : (
+                  <Navigate to='/' />
+                )
               }
             />
             <Route path='*' element={<PageNotFound />} />
