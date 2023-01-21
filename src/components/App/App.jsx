@@ -393,7 +393,7 @@ const App = () => {
               path='/signin'
               element={
                 !loggedIn ? (
-                  <Register
+                  <Login
                   handleLogin={handleLogin}
                   errorMessage={errorMessage}
                   isError={isError}
