@@ -21,7 +21,7 @@ const Register = ({ handleRegister, errorMessage, isError, setIsError }) => {
       false
     );
     setIsError(false);
-  }, [resetForm]);
+  }, [setIsError, resetForm]);
 
   //функция отправки данных формы
   const handleSubmit = (e) => {

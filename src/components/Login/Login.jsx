@@ -18,7 +18,7 @@ import useFormValidation from '../../hooks/useFormValidation.js';
         false
       );
       setIsError(false);
-    }, [resetForm]);
+    }, [setIsError, resetForm]);
 
     // Отправка данных формы
     const handleSubmit = (e) => {

@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
+import {
+  BREAKPOINT_998,
+  BREAKPOINT_550,
+  AMOUNT_CARDS_5,
+  AMOUNT_CARDS_8,
+  AMOUNT_CARDS_12,
+  CARDS_TO_ADD_2,
+  CARDS_TO_ADD_3,
+  MOVIE_DURATION,
+} from '../../configs/constants.js';
 
 const MoviesCardList = ({
   movies,
@@ -11,9 +21,7 @@ const MoviesCardList = ({
   checkbox,
   checkboxSaved,
   search,
-  setSearch,
   searchSaved,
-  isError,
   isErrorMovies,
   isLoading,
 }) => {
@@ -48,15 +56,15 @@ const MoviesCardList = ({
   }, [widthWindow]);
 
   const changeCardsAmount = () => {
-    if (widthWindow <= 550) {
-      setCardsAmount(5);
-      setMoreCards(2);
-    } else if (widthWindow > 748 && widthWindow <= 998) {
-      setCardsAmount(8);
-      setMoreCards(2);
-    } else if (widthWindow >= 998) {
-      setCardsAmount(12);
-      setMoreCards(3);
+    if (widthWindow <= BREAKPOINT_550) {
+      setCardsAmount(AMOUNT_CARDS_5);
+      setMoreCards(CARDS_TO_ADD_2);
+    } else if (widthWindow >= BREAKPOINT_550 && widthWindow <= BREAKPOINT_998) {
+      setCardsAmount(AMOUNT_CARDS_8);
+      setMoreCards(CARDS_TO_ADD_2);
+    } else if (widthWindow >= BREAKPOINT_998) {
+      setCardsAmount(AMOUNT_CARDS_12);
+      setMoreCards(CARDS_TO_ADD_3);
     }
   };
 
@@ -67,7 +75,7 @@ const MoviesCardList = ({
 
   // фильтрация по длительности. Фильмы < 40 мин - короткометражки.
   const filterByDuration = (array) => {
-    return array.filter((item) => item.duration <= 40);
+    return array.filter((item) => item.duration <= MOVIE_DURATION);
   };
 
   // отрисовка массива фильмов в зависимости от состояния чекбокса
@@ -153,7 +161,9 @@ const MoviesCardList = ({
             <span className={spanNotFound}>
               {!isErrorMovies && savedMoviesMessage}
             </span>
-            <span className={spanTextError}>{isErrorMovies && messageError}</span>
+            <span className={spanTextError}>
+              {isErrorMovies && messageError}
+            </span>
           </>
         ) : (
           <>
@@ -170,8 +180,12 @@ const MoviesCardList = ({
                 );
               })}
             </ul>
-            <span className={spanNotFound}>{!isErrorMovies && moviesMessage}</span>
-            <span className={spanTextError}>{isErrorMovies && messageError}</span>
+            <span className={spanNotFound}>
+              {!isErrorMovies && moviesMessage}
+            </span>
+            <span className={spanTextError}>
+              {isErrorMovies && messageError}
+            </span>
             <button
               className={moviesButton}
               type='button'
