@@ -4,22 +4,24 @@ import React from 'react';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 
 const Navigation = ({ loggedIn }) => {
-  return <>
-  {!loggedIn ? <NavigationStart /> : <NavigationMovies />}
-  </>;
+  return <>{!loggedIn ? <NavigationStart /> : <NavigationMovies />}</>;
 };
 
-const setActiveLink = ({ isActive }) => (isActive ? 'navigation__link-active' : 'navigation__link');
+const setActiveLink = ({ isActive }) =>
+  isActive ? 'navigation__link-active' : 'navigation__link';
 
 const NavigationStart = () => {
   return (
     <>
-      <nav className="navigation">
-        <div className="navgiataion__container">
-          <NavLink className='navigation__link navigation__link_register' to="/signup">
+      <nav className='navigation'>
+        <div className='navgiataion__container'>
+          <NavLink
+            className='navigation__link navigation__link_register'
+            to='/signup'
+          >
             Регистрация
           </NavLink>
-          <NavLink className="navigation__entry-btn" to="/signin">
+          <NavLink className='navigation__entry-btn' to='/signin'>
             Войти
           </NavLink>
         </div>
@@ -29,24 +31,28 @@ const NavigationStart = () => {
 };
 
 const NavigationMovies = () => {
-
   const location = useLocation();
-  const navigationItemDark = `navigation__item ${location.pathname !== '/' ? 'navigation__item_dark' : ''}`;
+  const navigationItemDark = `navigation__item ${
+    location.pathname !== '/' ? 'navigation__item_dark' : ''
+  }`;
 
   return (
     <>
       <BurgerMenu />
-      <nav className="navigation navigation-movies">
-        <div className="navgiataion__container">
-          <NavLink className={setActiveLink} to="/movies">
+      <nav className='navigation navigation-movies'>
+        <div className='navgiataion__container'>
+          <NavLink className={setActiveLink} to='/movies'>
             Фильмы
           </NavLink>
-          <NavLink className={setActiveLink} to="/saved-movies">
+          <NavLink className={setActiveLink} to='/saved-movies'>
             Сохраненные фильмы
           </NavLink>
         </div>
       </nav>
-      <NavLink className="navigation__acc-btn navigation__acc-btn_hidden" to="/profile">
+      <NavLink
+        className='navigation__acc-btn navigation__acc-btn_hidden'
+        to='/profile'
+      >
         Аккаунт
         <div className={navigationItemDark}></div>
       </NavLink>

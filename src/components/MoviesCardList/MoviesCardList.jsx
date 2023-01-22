@@ -48,13 +48,13 @@ const MoviesCardList = ({
   }, [widthWindow]);
 
   const changeCardsAmount = () => {
-    if (widthWindow <= 480) {
+    if (widthWindow <= 550) {
       setCardsAmount(5);
       setMoreCards(2);
-    } else if (widthWindow > 748 && widthWindow <= 1014) {
+    } else if (widthWindow > 748 && widthWindow <= 998) {
       setCardsAmount(8);
       setMoreCards(2);
-    } else if (widthWindow >= 1015) {
+    } else if (widthWindow >= 998) {
       setCardsAmount(12);
       setMoreCards(3);
     }

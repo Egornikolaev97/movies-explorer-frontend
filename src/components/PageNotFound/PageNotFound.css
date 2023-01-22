@@ -38,13 +38,6 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
-
-}
-
-@media (max-width: 768px) {
-    .notfound {
-
-    }
 }
 
 @media (min-width: 320px) and (max-width: 520px) {
