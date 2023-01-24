@@ -9,7 +9,9 @@ const PageNotFound = () => {
         <h1 className='notfound__code'>404</h1>
         <p className='notfound__type'>Страница не найдена</p>
       </div>
-      <NavLink className='notfound__link' to='/'>Назад</NavLink>
+      <NavLink className='notfound__link' to='/'>
+        Назад
+      </NavLink>
     </section>
   );
 };
