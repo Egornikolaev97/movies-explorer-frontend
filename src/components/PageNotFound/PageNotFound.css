@@ -31,14 +31,13 @@
     padding-bottom: 5px;
 
 }
-
-.notfound__link {
+/* .notfound__link {
     color: #4285F4;
     text-decoration: none;
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
-}
+} */
 
 .notfound__btn {
     color: #4285F4;
@@ -74,7 +73,7 @@
         line-height: 15px;
     }
 
-    .notfound__link {
+    .notfound__btn {
         font-weight: 400;
         font-size: 12px;
         line-height: 15px;
