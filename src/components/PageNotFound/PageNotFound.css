@@ -40,6 +40,22 @@
     line-height: 17px;
 }
 
+.notfound__btn {
+    color: #4285F4;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+    transition: opacity .2s linear;
+}
+
+.notfound__btn:hover {
+    opacity: 0.7;
+}
+
 @media (min-width: 320px) and (max-width: 520px) {
     .notfound {
         padding: 43px 0 24px;

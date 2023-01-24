@@ -27,8 +27,9 @@ import mainApi from '../../utils/MainApi';
 
 const App = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   // С помощью переменной проверяем, авторизирован ли пользователь
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   // С Помощью переменной задаем отображение прелоудера
   const [isLoading, setIsLoading] = useState(false);
   // С помощью переменной проверем, отображается ли сообщение об успешном изменении данных.
@@ -57,15 +58,6 @@ const App = () => {
   // переменные для чекбокса
   const [checkbox, setCheckbox] = useState(false);
   const [checkboxSaved, setCheckboxSaved] = useState(false);
-
-  const location = useLocation();
-
-  // Редирект на страницу с фильмами, если юзер залогинен
-  // useEffect(() => {
-  //   if (loggedIn) {
-  //     navigate(location.pathname);
-  //   }
-  // }, [loggedIn]);
 
   // Получение данных пользователя при загрузке страницы
   useEffect(() => {
