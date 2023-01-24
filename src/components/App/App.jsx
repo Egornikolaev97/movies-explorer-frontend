@@ -28,7 +28,7 @@ import mainApi from '../../utils/MainApi';
 const App = () => {
   const navigate = useNavigate();
   // С помощью переменной проверяем, авторизирован ли пользователь
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   // С Помощью переменной задаем отображение прелоудера
   const [isLoading, setIsLoading] = useState(false);
   // С помощью переменной проверем, отображается ли сообщение об успешном изменении данных.
