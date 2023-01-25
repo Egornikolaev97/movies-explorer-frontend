@@ -1,26 +1,32 @@
 import './Login.css';
 import Logo from '../Logo/Logo';
 import {NavLink} from 'react-router-dom';
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
+import useFormValidation from '../../hooks/useFormValidation.js';
 
-  const Login = ({handleLogin}) => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+  const Login = ({ handleLogin, errorMessage, isError, setIsError }) => {
+    const {values, errors, isValid, resetForm, handleChange, setIsValid } = useFormValidation();
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setData({
-      ...data,
-      [name]: value,
-    });
-  }
+    // Очистка полей формы и удаление сообщение об
+    // ошибки при переходе на страницу "регистрация"
+    useEffect(() => {
+      resetForm({
+          email: "",
+          password: "",
+        },
+        {},
+        false
+      );
+      setIsError(false);
+    }, [setIsError, resetForm]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleLogin(data);
-  };
+    // Отправка данных формы
+    const handleSubmit = (e) => {
+      const {email, password } = values
+      e.preventDefault();
+      handleLogin({email, password});
+      setIsValid(false);
+    }
 
   return (
     <section className="form-page login">
@@ -32,26 +38,40 @@ import React, {useState} from 'react';
           <input
           className="form-page__input"
           name='email'
-          type='text'
+          type='email'
+          value={values.email}
           onChange={handleChange}
-          value={data.email}
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,30}$"
+          minLength={2}
+          maxLength={30}
+          required
            />
+           <span className='form__error'>{errors.email}</span>
         </label>
         <label className="form-page__input-container">
           <span className="form-page__input-text">Пароль</span>
           <input
           className="form-page__input"
-          name="password"
-          type="password"
+          name='password'
+          type='password'
+          value={values.password}
           onChange={handleChange}
-          value={data.password}
+          minLength={4}
+          maxLength={30}
+          required
            />
+           <span className='form__error'>{errors.password}</span>
         </label>
       </form>
+
+      <span className={isError ? 'profile__message profile__message_error': 'profile__message_hidden'}>
+        {errorMessage}
+      </span>
+
       <button
-      className="form-page__btn-submit"
-      onClick={handleLogin}
-      type='button'
+      className={`form-page__btn-submit ${!isValid ? 'form-page__btn-submit_disabled' : ''}`}
+      onClick={handleSubmit}
+      type='submit'
       >
         Войти
         </button>
@@ -61,6 +81,7 @@ import React, {useState} from 'react';
             Регистрация
         </NavLink>
       </div>
+
     </section>
   );
 };

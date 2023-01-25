@@ -3,7 +3,7 @@
         max-width: 100%;
         min-width: 320px;
         min-height: 100vh;
-        height: max-content;
+        /* height: max-content; */
         margin: 0 auto;
         background-color: #202020;
         -moz-osx-font-smoothing: grayscale;
@@ -12,4 +12,15 @@
         -ms-text-size-adjust: 100%;
         -moz-text-size-adjust: 100%;
         text-rendering: optimizeLegibility;
+        display: flex;
+        flex-direction: column;
+}
+
+.content {
+        min-height: 100%;
+        flex: 1 1 auto;
+}
+
+.body {
+        height: 100%;
 }
