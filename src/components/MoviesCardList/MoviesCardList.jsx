@@ -16,6 +16,7 @@ import {
 const MoviesCardList = ({
   movies,
   savedMovies,
+  savedMoviesList,
   handleDeleteMovie,
   handleSaveMovie,
   checkbox,
@@ -24,6 +25,8 @@ const MoviesCardList = ({
   searchSaved,
   isErrorMovies,
   isLoading,
+  searchSavedReload,
+  setSearchSavedReload
 }) => {
   // ширина экрана
   const [widthWindow, setWidthWindow] = useState(window.innerWidth);
@@ -90,7 +93,7 @@ const MoviesCardList = ({
       : 'movies__btn';
 
   const messageMoviesPage = search ? 'Ничего не найдено :(' : 'Начните поиск';
-  const messageSavedMoviesPage = searchSaved
+  const messageSavedMoviesPage = searchSaved && searchSavedReload
     ? 'Ничего не найдено :('
     : 'Вы ещё ничего не сохранили';
 
@@ -150,6 +153,7 @@ const MoviesCardList = ({
                 return (
                   <MoviesCard
                     savedMovies={savedMovies}
+                    savedMoviesList={savedMoviesList}
                     key={movie._id}
                     movie={movie}
                     handleSaveMovie={handleSaveMovie}
@@ -172,6 +176,7 @@ const MoviesCardList = ({
                 return (
                   <MoviesCard
                     savedMovies={savedMovies}
+                    savedMoviesList={savedMoviesList}
                     key={movie.id}
                     movie={movie}
                     handleSaveMovie={handleSaveMovie}

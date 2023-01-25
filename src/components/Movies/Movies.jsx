@@ -20,6 +20,8 @@ const Movies = ({
   isError,
   isErrorMovies,
   isLoading,
+  searchSavedReload,
+  setSearchSavedReload
 }) => {
   return (
     <>
@@ -31,6 +33,9 @@ const Movies = ({
         handleToggleCheckSaved={handleToggleCheckSaved}
         search={search}
         setSearch={setSearch}
+        searchSavedReload={searchSavedReload}
+        setSearchSavedReload={setSearchSavedReload}
+
       />
       <MoviesCardList
         movies={movies}
@@ -46,6 +51,8 @@ const Movies = ({
         checkbox={checkbox}
         isLoading={isLoading}
         checkboxSaved={checkboxSaved}
+        searchSavedReload={searchSavedReload}
+        setSearchSavedReload={setSearchSavedReload}
       />
     </>
   );

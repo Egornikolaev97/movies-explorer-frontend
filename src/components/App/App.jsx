@@ -48,6 +48,7 @@ const App = () => {
   // Проверяем, завершился ли поиск
   const [search, setSearch] = useState(false);
   const [searchSaved, setSearchSaved] = useState(false);
+  const [searchSavedReload, setSearchSavedReload] = useState(false);
   // переменные для фильмов
   const [movies, setMovies] = useState([]);
   // переменные для сохраненных фильмов/сохраненных фильмов
@@ -58,6 +59,11 @@ const App = () => {
   // переменные для чекбокса
   const [checkbox, setCheckbox] = useState(false);
   const [checkboxSaved, setCheckboxSaved] = useState(false);
+
+    // проверка авторизации при загрузке страницы
+    useEffect(() => {
+      tokenCheck();
+  }, []);
 
   // Получение данных пользователя при загрузке страницы
   useEffect(() => {
@@ -83,13 +89,7 @@ const App = () => {
     if (JSON.parse(localStorage.getItem('filteredMovies'))) {
       setMovies(JSON.parse(localStorage.getItem('filteredMovies')));
       setCheckbox(JSON.parse(localStorage.getItem('checkbox')));
-      setCheckboxSaved(JSON.parse(localStorage.getItem('checkboxSaved')));
     }
-  }, []);
-
-  // проверка авторизации при загрузке страницы
-  useEffect(() => {
-    tokenCheck();
   }, []);
 
   // проверка токена
@@ -312,6 +312,8 @@ const App = () => {
               element={
                 <ProtectedRoute loggedIn={loggedIn}>
                   <Movies
+                  searchSavedReload={searchSavedReload}
+                  setSearchSavedReload={setSearchSavedReload}
                     movies={movies}
                     search={search}
                     setSearch={search}
@@ -327,6 +329,7 @@ const App = () => {
                     keyword={keyword}
                     checkbox={checkbox}
                     checkboxSaved={checkboxSaved}
+                    setCheckboxSaved={setCheckboxSaved}
                     handleToggleCheckMovies={handleToggleCheckMovies}
                   />
                 </ProtectedRoute>
@@ -346,7 +349,10 @@ const App = () => {
                     savedMoviesList={savedMoviesList}
                     handleDeleteMovie={handleDeleteMovie}
                     checkboxSaved={checkboxSaved}
+                    setCheckboxSaved={setCheckboxSaved}
                     handleToggleCheckSaved={handleToggleCheckSaved}
+                    setSearchSavedReload={setSearchSavedReload}
+                    searchSavedReload={searchSavedReload}
                   />
                 </ProtectedRoute>
               }
@@ -371,11 +377,11 @@ const App = () => {
               element={
                 !loggedIn ? (
                   <Register
-                  handleRegister={handleRegister}
-                  errorMessage={errorMessage}
-                  isError={isError}
-                  setIsError={setIsError}
-                />
+                    handleRegister={handleRegister}
+                    errorMessage={errorMessage}
+                    isError={isError}
+                    setIsError={setIsError}
+                  />
                 ) : (
                   <Navigate to='/' />
                 )
@@ -386,11 +392,11 @@ const App = () => {
               element={
                 !loggedIn ? (
                   <Login
-                  handleLogin={handleLogin}
-                  errorMessage={errorMessage}
-                  isError={isError}
-                  setIsError={setIsError}
-                />
+                    handleLogin={handleLogin}
+                    errorMessage={errorMessage}
+                    isError={isError}
+                    setIsError={setIsError}
+                  />
                 ) : (
                   <Navigate to='/' />
                 )

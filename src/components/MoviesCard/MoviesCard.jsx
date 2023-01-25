@@ -1,40 +1,37 @@
 import './MoviesCard.css';
 import { useLocation } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 function MoviesCard({
   movie,
   handleDeleteMovie,
   handleSaveMovie,
   savedMovies,
+  savedMoviesList,
 }) {
   const { image, nameRU, duration } = movie;
 
   let hours = Math.trunc(duration / 60);
   let min = duration - hours * 60;
-  const [like, setLike] = useState(false);
 
   const location = useLocation();
   const savedMoviePath = location.pathname === '/saved-movies';
   const imageUrl = `https://api.nomoreparties.co/${image.url}`;
 
   const isSaved = savedMovies.some((item) => item.movieId === movie.id);
+  const isSavedList = savedMoviesList.some((m) => m.movieId === movie.id);
   const savedItem = savedMovies.filter((m) => m.movieId === movie.id)[0];
 
   //отображение кнопки лайк
-  const likeButton = isSaved ? 'movie__like movie__like_active' : 'movie__like';
+  const likeButton = isSaved || isSavedList ? 'movie__like movie__like_active' : 'movie__like';
   const deleteButton = 'movie__delete';
   const buttonClass = savedMoviePath ? deleteButton : likeButton;
 
   const handleMovieClick = () => {
     if (isSaved) {
       handleDeleteMovie(savedItem);
-      setLike(false);
-      console.log('deleted');
     } else {
       handleSaveMovie(movie);
-      setLike(true);
-      console.log('saved');
     }
   };
 

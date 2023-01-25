@@ -10,40 +10,48 @@ const SearchForm = ({
   keyword,
   checkbox,
   checkboxSaved,
+  setCheckboxSaved,
   handleToggleCheckMovies,
   handleToggleCheckSaved,
-  search,
-  setSearch,
+  setSearchSavedReload,
+  searchSavedReload,
 }) => {
   const [movieValues, setMovieValues] = useState('');
   const [searchMessage, setSearchMessage] = useState('');
 
   const location = useLocation();
   const moviesPath = location.pathname === '/movies';
+  const savedMoviesPath = location.pathname === '/saved-movies';
 
   useEffect(() => {
     if (keyword && moviesPath) {
       setMovieValues(keyword);
-      searchMovies(keyword);
+      searchMovies(keyword)
+    } else if (savedMoviesPath) {
+      searchSavedMovies('');
+      setCheckboxSaved(false);
+      setSearchSavedReload(false);
     }
-  }, []);
+  }, [])
 
   const handleChange = (e) => {
     setMovieValues(e.target.value);
   };
 
   const searchToggling = () => {
-    moviesPath
-    ? searchMovies(movieValues)
-    : searchSavedMovies(movieValues);
-  }
+    moviesPath ? searchMovies(movieValues) : searchSavedMovies(movieValues);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearchMessage('');
-    return movieValues
-      ? searchToggling(movieValues)
-      : setSearchMessage('Введите ключевое слово');
+    setSearchSavedReload(true);
+    if (movieValues) {
+      searchToggling(movieValues);
+    } else {
+      setSearchMessage('Введите ключевое слово');
+      setSearchSavedReload(false);
+    }
   };
 
   return (
