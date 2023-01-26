@@ -26,7 +26,7 @@ const MoviesCardList = ({
   isErrorMovies,
   isLoading,
   searchSavedReload,
-  setSearchSavedReload
+  setSearchSavedReload,
 }) => {
   // ширина экрана
   const [widthWindow, setWidthWindow] = useState(window.innerWidth);
@@ -93,9 +93,10 @@ const MoviesCardList = ({
       : 'movies__btn';
 
   const messageMoviesPage = search ? 'Ничего не найдено :(' : 'Начните поиск';
-  const messageSavedMoviesPage = searchSaved && searchSavedReload
-    ? 'Ничего не найдено :('
-    : 'Вы ещё ничего не сохранили';
+  const messageSavedMoviesPage =
+    searchSaved && searchSavedReload
+      ? 'Ничего не найдено :('
+      : 'Вы ещё ничего не сохранили';
 
   // После логина появляется сообщение "Начните поиск",
   // при неудачном поиске - сообщение "Ничего не найдено :("

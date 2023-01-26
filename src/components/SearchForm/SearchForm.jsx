@@ -14,7 +14,6 @@ const SearchForm = ({
   handleToggleCheckMovies,
   handleToggleCheckSaved,
   setSearchSavedReload,
-  searchSavedReload,
 }) => {
   const [movieValues, setMovieValues] = useState('');
   const [searchMessage, setSearchMessage] = useState('');
@@ -26,7 +25,7 @@ const SearchForm = ({
   useEffect(() => {
     if (keyword && moviesPath) {
       setMovieValues(keyword);
-      searchMovies(keyword)
+      searchMovies(keyword);
     } else if (savedMoviesPath) {
       searchSavedMovies('');
       setCheckboxSaved(false);
