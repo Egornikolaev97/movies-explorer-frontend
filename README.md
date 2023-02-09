@@ -9,11 +9,13 @@
 ### Сервис по поиску фильмов
 После регистрации и авторизации пользователя появляется возможность осуществлять поиск фильмов, сохранять их и удалять. 
 По [ТЗ](https://code.s3.yandex.net/web-developer/static/new-program/web-diploma-criteria-2.0/checklist_react_diplom.pdf) отображение фильмов происходит только после запроса к сервису [beatfilm-movies](https://api.nomoreparties.co/beatfilm-movies). 
+
 ## Ссылки
-API доступен по данной [ссылке](https://api.nikolaev.movies.nomoredomains.
-Публичный [домен](https://nikolaev.movies.nomoredomains.icu/)
-Макет в [Figma](https://disk.yandex.ru/d/fVy7WOzH9EjM0Q)
-[ТЗ к дипломной работе](https://code.s3.yandex.net/web-developer/static/new-program/web-diploma-criteria-2.0/checklist_react_diplom.pdf)
+
+- API доступен по данной [ссылке](https://api.nikolaev.movies.nomoredomains.
+- Публичный [домен](https://nikolaev.movies.nomoredomains.icu/)
+- Макет в [Figma](https://disk.yandex.ru/d/fVy7WOzH9EjM0Q)
+- [ТЗ к дипломной работе](https://code.s3.yandex.net/web-developer/static/new-program/web-diploma-criteria-2.0/checklist_react_diplom.pdf)
 
 ## Примененные знания
 * Верстка
